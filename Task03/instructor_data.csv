@@ -1,0 +1,11 @@
+ID,name,address,gender,Dept_ID,phone_num,personal_mail
+I001,Helen Perera,200 College Rd.,Female,CE,0710003001,helen.perera@uni.edu
+I002,Ian Gomes,210 College Rd.,Male,CE,0710003002,ian.gomes@uni.edu
+I003,Jaya Fernando,220 College Rd.,Male,CE,0710003003,jaya.fernando@uni.edu
+I004,Kumari Jayasuriya,230 College Rd.,Female,CE,0710003004,kumari.j@uni.edu
+I005,Lalith Silva,240 College Rd.,Male,CE,0710003005,lalith.silva@uni.edu
+I006,Maya Rajapaksa,250 College Rd.,Female,EEE,0710003006,maya.raj@uni.edu
+I007,Nimal Bandara,260 College Rd.,Male,EEE,0710003007,nimal.bandara@uni.edu
+I008,Oshan Kularatne,270 College Rd.,Male,EEE,0710003008,oshan.k@uni.edu
+I009,Priya De Silva,280 College Rd.,Female,EEE,0710003009,priya.desilva@uni.edu
+I010,Rohan Wickramasinghe,290 College Rd.,Male,EEE,0710003010,rohan.w@uni.edu

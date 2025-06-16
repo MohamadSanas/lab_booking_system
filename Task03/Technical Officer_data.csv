@@ -1,0 +1,5 @@
+ID,name,address,gender,Dept_ID,phone_num,personal_mail
+T001,Alice Moore,12 Oak St.,Female,CE,710001001,alice.moore@uni.edu
+T002,Bob Tan,34 Pine Rd.,Male,CE,710001002,bob.tan@uni.edu
+T003,Chitra Silva,56 Maple Ave.,Female,EEE,710001003,chitra.silva@uni.edu
+T004,David Perera,78 Elm Blvd.,Male,EEE,710001004,david.perera@uni.edu

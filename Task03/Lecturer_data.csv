@@ -1,0 +1,4 @@
+ID,name,address,gender,Dept_ID,phone_num,personal_mail
+L001,Dr. Emma Lee,100 University Dr.,Female,CE,0710002001,emma.lee@uni.edu
+L002,Dr. Frank Nede,110 University Dr.,Male,CE,0710002002,frank.nede@uni.edu
+L003,Dr. Grace Yapa,120 University Dr.,Female,EEE,0710002003,grace.yapa@uni.edu
