@@ -4,6 +4,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>University_REG</title>
+
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
          <link rel="stylesheet" href="assets/css/indexStyle.css">
         
@@ -20,8 +21,8 @@
         <div class="page-wrapper">
             <div class="login-box">
                 <h2 style="font-size: 30px;">Login here</h2>
-                <form action="backend/login.php" method="post">
-                    <input type="text" name="userName" placeholder="User Name" required><br>
+                <form action="backend/login.php" method="POST">
+                    <input type="text" name="userID" placeholder="User ID" required><br>
                     <input type="password" name="password" placeholder="Your Password" required>
                     <input type="submit" value="Login">
                 </form>
@@ -29,6 +30,8 @@
             </div>
 
         </div>
+
+        <script src="assets/js/scripts.js"></script>
 
     </body>
 </html>
