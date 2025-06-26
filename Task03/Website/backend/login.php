@@ -38,7 +38,7 @@ if ($result->num_rows === 1) {
             header("Location: ../student.html");
             break;
         case "Technical_Officer":
-            header("Location: ../tehnical_officer.html");
+            header("Location: ../technical_officer.html");
             break;
         case "Lecturer":
             header("Location: ../lecturer.php");

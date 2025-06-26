@@ -30,16 +30,16 @@
 
       <div class="bg-white p-3 mb-4 border rounded">
         <div class="form-group">
-          <select id="semester" class="form-control">
-            <option value="1">Select semester</option>
-            <option value="2">Semester 1</option>
-            <option value="3">Semester 2</option>
-            <option value="4">Semester 3</option>
-            <option value="5">Semester 4</option>
-            <option value="6">Semester 5</option>
-            <option value="7">Semester 6</option>
-            <option value="8">Semester 7</option>
-            <option value="9">Semester 8</option>
+          <select id="semester" class="form-control" onchange="loadEnrolledCourses()">
+            <option value="">Select semester</option>
+            <option value="1">Semester 1</option>
+            <option value="2">Semester 2</option>
+            <option value="3">Semester 3</option>
+            <option value="4">Semester 4</option>
+            <option value="5">Semester 5</option>
+            <option value="6">Semester 6</option>
+            <option value="7">Semester 7</option>
+            <option value="8">Semester 8</option>
           </select>
         </div>
       </div>
@@ -62,10 +62,10 @@
 
       <template id="new-Course-Table">
         <tr class="new-course-row">
-          <td><input type="text" class="form-control" placeholder="course code" style="font-size: 13px;"></td>
-          <td><input type="text" class="form-control" placeholder="course name" style="font-size: 13px;"></td>
-          <td><input type="number" class="form-control" placeholder="credit" style="font-size: 13px;"></td>
-          <td><input type="number" class="form-control" placeholder="hours" style="font-size: 13px;"></td>
+          <td><input type="text" class="form-control" placeholder="course code" onblur="fetchCourseInfo(this)" /></td>
+          <td><input type="text" class="form-control" placeholder="course name" readonly /></td>
+          <td><input type="number" class="form-control" placeholder="credit" readonly /></td>
+          <td><input type="number" class="form-control" placeholder="hours" readonly /></td>
           <td>
             <button class="btn btn-success btn-sm" onclick="saveFunction(event)">Save</button>
             <button class="btn btn-danger btn-sm" onclick="cancelFunction(this)">Cancel</button>
@@ -95,14 +95,11 @@
             <th style="width: 15%;">Time</th>
             <th style="width:10%">Status</th>
           </tr>
-
           <tr id="noLabsRow">
             <td colspan="7" class="text-center">No Labs yet</td>
           </tr>
         </thead>
         <tbody id="labTableBody"></tbody>
-        </thead>
-        </tbody>
       </table>
     </div>
   </section>
@@ -112,11 +109,15 @@
       document.getElementById('courseSection').style.display = 'block';
       document.getElementById('labSection').style.display = 'none';
     }
+
     function showLabs() {
       document.getElementById('courseSection').style.display = 'none';
       document.getElementById('labSection').style.display = 'block';
+      loadStudentLabs(); // Optional: Implemented in StudentScripts.js
     }
   </script>
-  <script src="assets/js/StudentScripts.js?v=2"></script>
+
+  <!-- 🔗 Connect your JS -->
+  <script src="assets/js/StudentScripts.js?v=5"></script>
 </body>
 </html>

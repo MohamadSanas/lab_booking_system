@@ -56,10 +56,12 @@
           </td>
           <td><input type="text" class="form-control practical-name" readonly></td>
           <td>
-            <select class="form-control lab-code">
+            <select class="form-control lab-code" onchange="showInstruments(this)">
               <option value="">Select Lab</option>
             </select>
+            <div class="instrument-list text-muted small mt-1"></div>
           </td>
+
           <td><input type="date" class="form-control lab-date"></td>
           <td><input type="time" class="form-control lab-time" min="08:00" max="18:00"></td>
           <td>
@@ -100,9 +102,22 @@
           </tbody>
         </table>
       </div>
+
+      <div id="labInstrumentsContainer" style="margin-top: 20px;"></div>
+
     </div>
+    <a href="generate_lab_report.php" target="_blank" class="btn btn-primary">Download Lab Report (PDF)</a>
+
   </section>
 
+  <!-- ✅ Inject instructor ID into JS -->
+  <script>
+    function getInstructorID() {
+      return "<?php echo $_SESSION['userID'] ?? ''; ?>";
+    }
+  </script>
+
+  <!-- ✅ View toggle -->
   <script>
     function BookLabs() {
       document.getElementById('courseSection').style.display = 'block';
@@ -112,10 +127,11 @@
     function viewLabs() {
       document.getElementById('courseSection').style.display = 'none';
       document.getElementById('labSection').style.display = 'block';
-      loadBookedLabs();
+      loadBookedLabs(); // reload labs
     }
   </script>
 
-  <script src="assets/js/StudentScripts.js?v=4"></script>
+  <!-- ✅ Main JS logic -->
+  <script src="assets/js/StudentScripts.js?v=5"></script>
 </body>
 </html>

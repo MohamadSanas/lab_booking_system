@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 26, 2025 at 12:07 PM
+-- Generation Time: Jun 26, 2025 at 09:18 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -20,6 +20,18 @@ SET time_zone = "+00:00";
 --
 -- Database: `laboratory_booking_system`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `enroll_course`
+--
+
+CREATE TABLE `enroll_course` (
+  `student_ID` varchar(20) NOT NULL,
+  `subject_ID` varchar(6) NOT NULL,
+  `subject_name` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -66,6 +78,13 @@ CREATE TABLE `instruments_info` (
   `Lab_code` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `instruments_info`
+--
+
+INSERT INTO `instruments_info` (`Instrument_code`, `Name`, `Quantity`, `Lab_code`) VALUES
+('COMPUTER', 'COMPUTERS', 10, 'COM02');
+
 -- --------------------------------------------------------
 
 --
@@ -107,8 +126,17 @@ CREATE TABLE `lab_booking` (
   `instructor_ID` varchar(20) DEFAULT NULL,
   `schedule_date` date NOT NULL,
   `schedule_time` time NOT NULL,
-  `action` enum('Finished','Poostponded','canceled') DEFAULT NULL
+  `action` enum('Finished','Postponed','Canceled') DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `lab_booking`
+--
+
+INSERT INTO `lab_booking` (`subject_ID`, `practical_ID`, `lab_ID`, `instructor_ID`, `schedule_date`, `schedule_time`, `action`) VALUES
+('EC5020', 'PR007', 'EEE01', 'I001', '2025-06-25', '12:38:00', 'Finished'),
+('EC5070', 'PR004', 'COM01', 'I001', '2025-06-27', '00:30:00', 'Canceled'),
+('EC5080', 'PR001', 'COM01', 'I001', '2025-06-25', '01:11:00', 'Finished');
 
 -- --------------------------------------------------------
 
@@ -149,6 +177,13 @@ CREATE TABLE `practical_assign_info` (
   `schedule_date` date NOT NULL,
   `schedule_time` time NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `practical_assign_info`
+--
+
+INSERT INTO `practical_assign_info` (`subject_ID`, `practical_ID`, `lab_ID`, `instructor_ID`, `schedule_date`, `schedule_time`) VALUES
+('EC5080', 'PR001', 'COM02', 'I001', '2025-06-27', '08:00:00');
 
 -- --------------------------------------------------------
 
@@ -386,6 +421,13 @@ INSERT INTO `users` (`ID`, `password`, `role`) VALUES
 --
 
 --
+-- Indexes for table `enroll_course`
+--
+ALTER TABLE `enroll_course`
+  ADD PRIMARY KEY (`student_ID`,`subject_ID`),
+  ADD KEY `subject_ID` (`subject_ID`);
+
+--
 -- Indexes for table `instructors`
 --
 ALTER TABLE `instructors`
@@ -468,6 +510,13 @@ ALTER TABLE `users`
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `enroll_course`
+--
+ALTER TABLE `enroll_course`
+  ADD CONSTRAINT `enroll_course_ibfk_1` FOREIGN KEY (`student_ID`) REFERENCES `student` (`ID`),
+  ADD CONSTRAINT `enroll_course_ibfk_2` FOREIGN KEY (`subject_ID`) REFERENCES `subjects` (`course_code`);
 
 --
 -- Constraints for table `instruments_info`

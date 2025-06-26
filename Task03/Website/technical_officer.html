@@ -1,9 +1,83 @@
 <!DOCTYPE html>
-<html>
-    <head>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Technical officer-Lab</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"/>
+  <link rel="stylesheet" href="assets/css/technicalOfficer.css"/>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
 
-    </head>
-    <body>
-        <h2>skogr</h2>
-    </body>
+
+<body>
+    <nav class="navbar navbar-dark bg-dark d-flex justify-content-between align-items-center">
+        <span class="navbar-brand">UNIVERSITY OF JAFFNA - FACULTY OF ENGINEERING</span>
+    </nav>
+
+    <nav>
+        <div class="container mt-4">
+            <h3 class="mb-3">Lab Booking Log</h3>
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped table-sm">
+                <thead class="thead-dark">
+                    <tr>
+                    <th>Subject ID</th>
+                    <th>Practical ID</th>
+                    <th>Lab ID</th>
+                    <th>Instructor ID</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="bookingLogBody">
+                    <tr><td colspan="7" class="text-center">Loading...</td></tr>
+                </tbody>
+                </table>
+            </div>
+            </div>
+
+
+    </nav>
+
+    <script>
+        function loadLabLog() {
+        fetch('backend/fetch_lab_log.php')
+            .then(res => res.json())
+            .then(data => {
+            const tbody = document.getElementById("bookingLogBody");
+            tbody.innerHTML = "";
+
+            if (!data.success || data.data.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="7" class="text-center">No booking records found</td></tr>`;
+                return;
+            }
+
+            data.data.forEach(item => {
+                const tr = document.createElement("tr");
+                tr.innerHTML = `
+                <td>${item.subject_ID}</td>
+                <td>${item.practical_ID}</td>
+                <td>${item.lab_ID}</td>
+                <td>${item.instructor_ID || '-'}</td>
+                <td>${item.schedule_date}</td>
+                <td>${item.schedule_time}</td>
+                <td>${item.action}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+            })
+            .catch(err => {
+            console.error("Error loading log:", err);
+            document.getElementById("bookingLogBody").innerHTML =
+                `<tr><td colspan="7" class="text-center">Error loading data</td></tr>`;
+            });
+        }
+
+        window.onload = loadLabLog;
+        </script>
+
+    
+</body>
 </html>
