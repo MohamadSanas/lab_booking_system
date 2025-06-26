@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Course Register</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"/>
+  <link rel="stylesheet" href="assets/css/StudentStyle.css?v=2"/>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+  <nav class="navbar navbar-dark d-flex justify-content-between align-items-center">
+    <span class="navbar_content">UNIVERSITY OF JAFFNA - FACULTY OF ENGINEERING</span>
+    <div>
+      <button class="btn btn-outline-light btn-sm mr-2" onclick="showCourses()">View Courses</button>
+      <button class="btn btn-outline-light btn-sm" onclick="showLabs()">View Labs</button>
+    </div>
+  </nav>
+
+  <section class="page p-4">
+    <!-- Course Section -->
+    <div id="courseSection">
+      <div class="greet mb-4">
+        <h3 class="page_greet">Welcome to SAIT</h3>
+        <h3 class="semester_box_head">Course Details</h3>
+      </div>
+
+      <div class="bg-white p-3 mb-4 border rounded">
+        <div class="form-group">
+          <select id="semester" class="form-control">
+            <option value="1">Select semester</option>
+            <option value="2">Semester 1</option>
+            <option value="3">Semester 2</option>
+            <option value="4">Semester 3</option>
+            <option value="5">Semester 4</option>
+            <option value="6">Semester 5</option>
+            <option value="7">Semester 6</option>
+            <option value="8">Semester 7</option>
+            <option value="9">Semester 8</option>
+          </select>
+        </div>
+      </div>
+
+      <table id="courseTable" class="table table-sm table-bordered table-striped">
+        <thead>
+          <tr>
+            <th style="width: 20%;">Course Code</th>
+            <th style="width: 30%">Name</th>
+            <th style="width: 15%;">Credits</th>
+            <th style="width: 15%;">Hours</th>
+            <th style="width: 20%;">Action</th>
+          </tr>
+          <tr id="noCourseRow">
+            <td colspan="5" class="text-center">No Course added yet</td>
+          </tr>
+        </thead>
+        <tbody id="courseTableBody"></tbody>
+      </table>
+
+      <template id="new-Course-Table">
+        <tr class="new-course-row">
+          <td><input type="text" class="form-control" placeholder="course code" style="font-size: 13px;"></td>
+          <td><input type="text" class="form-control" placeholder="course name" style="font-size: 13px;"></td>
+          <td><input type="number" class="form-control" placeholder="credit" style="font-size: 13px;"></td>
+          <td><input type="number" class="form-control" placeholder="hours" style="font-size: 13px;"></td>
+          <td>
+            <button class="btn btn-success btn-sm" onclick="saveFunction(event)">Save</button>
+            <button class="btn btn-danger btn-sm" onclick="cancelFunction(this)">Cancel</button>
+          </td>
+        </tr>
+      </template>
+
+      <div id="addCourseButton" class="mt-3">
+        <button class="btn btn-info" onclick="addNewCourse()">Add New Course</button>
+      </div>
+    </div>
+
+    <!-- Lab Section -->
+    <div id="labSection" style="display: none;">
+      <div class="greet mb-4">
+        <h3 class="page_greet">Lab Details</h3>
+      </div>
+
+      <table class="table table-sm table-bordered table-striped">
+        <thead>
+          <tr>
+            <th style="width: 15%;">Course Code</th>
+            <th style="width: 20%">Course Name</th>
+            <th style="width: 13%;">Lab Name</th>
+            <th style="width: 12%;">Lab Code</th>
+            <th style="width: 15%;">Date</th>
+            <th style="width: 15%;">Time</th>
+            <th style="width:10%">Status</th>
+          </tr>
+
+          <tr id="noLabsRow">
+            <td colspan="7" class="text-center">No Labs yet</td>
+          </tr>
+        </thead>
+        <tbody id="labTableBody"></tbody>
+        </thead>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <script>
+    function showCourses() {
+      document.getElementById('courseSection').style.display = 'block';
+      document.getElementById('labSection').style.display = 'none';
+    }
+    function showLabs() {
+      document.getElementById('courseSection').style.display = 'none';
+      document.getElementById('labSection').style.display = 'block';
+    }
+  </script>
+  <script src="assets/js/StudentScripts.js?v=2"></script>
+</body>
+</html>

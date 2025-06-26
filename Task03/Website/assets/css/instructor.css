@@ -1,10 +1,17 @@
 
 body {
   background-color: #f8f9fa;
+  overflow-x: auto;
+  min-width: 800px;
+}
+.table-responsive {
+  overflow-x: auto;
+  width: 100%;
 }
 .navbar{
     background-color: black;
     padding: 0.5rem 1rem;
+    width: 100%;
 }
 .navbar_content{
     color: white !important;

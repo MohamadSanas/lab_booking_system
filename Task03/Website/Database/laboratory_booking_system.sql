@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 16, 2025 at 12:33 PM
+-- Generation Time: Jun 26, 2025 at 12:07 PM
 -- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- PHP Version: 8.0.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -20,42 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `laboratory_booking_system`
 --
-
--- --------------------------------------------------------
-
---
--- Table structure for table `department`
---
-
-CREATE TABLE `department` (
-  `DeptID` varchar(20) NOT NULL,
-  `DeptName` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `department`
---
-
-INSERT INTO `department` (`DeptID`, `DeptName`) VALUES
-('CE', 'Department of Computer Engineering'),
-('CIVIL', 'Department of Civil Engineering'),
-('EEE', 'Department of Electrical & Electronic Engineering'),
-('GEN', 'Genral'),
-('IDS', 'Department of Inter disciplinary Studies '),
-('MECH', 'Department of Mechanical Engineering');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `enrollment`
---
-
-CREATE TABLE `enrollment` (
-  `Student_ID` varchar(20) DEFAULT NULL,
-  `Subject_ID` varchar(6) DEFAULT NULL,
-  `Lecturer_ID` varchar(20) DEFAULT NULL,
-  `Instructor_ID` varchar(20) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -133,6 +97,22 @@ INSERT INTO `laboratory` (`Lab_code`, `Name`, `Dept_ID`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `lab_booking`
+--
+
+CREATE TABLE `lab_booking` (
+  `subject_ID` varchar(6) NOT NULL,
+  `practical_ID` varchar(10) NOT NULL,
+  `lab_ID` varchar(10) NOT NULL,
+  `instructor_ID` varchar(20) DEFAULT NULL,
+  `schedule_date` date NOT NULL,
+  `schedule_time` time NOT NULL,
+  `action` enum('Finished','Poostponded','canceled') DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `lecturers`
 --
 
@@ -162,10 +142,12 @@ INSERT INTO `lecturers` (`ID`, `name`, `address`, `gender`, `Dept_ID`, `phone_nu
 --
 
 CREATE TABLE `practical_assign_info` (
-  `Subject_ID` varchar(6) DEFAULT NULL,
-  `Practical_ID` varchar(10) DEFAULT NULL,
-  `Lab_code` varchar(10) DEFAULT NULL,
-  `To_ID` varchar(20) DEFAULT NULL
+  `subject_ID` varchar(6) NOT NULL,
+  `practical_ID` varchar(10) NOT NULL,
+  `lab_ID` varchar(10) NOT NULL,
+  `instructor_ID` varchar(20) DEFAULT NULL,
+  `schedule_date` date NOT NULL,
+  `schedule_time` time NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -404,21 +386,6 @@ INSERT INTO `users` (`ID`, `password`, `role`) VALUES
 --
 
 --
--- Indexes for table `department`
---
-ALTER TABLE `department`
-  ADD PRIMARY KEY (`DeptID`);
-
---
--- Indexes for table `enrollment`
---
-ALTER TABLE `enrollment`
-  ADD KEY `Student_ID` (`Student_ID`),
-  ADD KEY `Subject_ID` (`Subject_ID`),
-  ADD KEY `Lecturer_ID` (`Lecturer_ID`),
-  ADD KEY `Instructor_ID` (`Instructor_ID`);
-
---
 -- Indexes for table `instructors`
 --
 ALTER TABLE `instructors`
@@ -440,6 +407,15 @@ ALTER TABLE `laboratory`
   ADD KEY `Dept_ID` (`Dept_ID`);
 
 --
+-- Indexes for table `lab_booking`
+--
+ALTER TABLE `lab_booking`
+  ADD PRIMARY KEY (`subject_ID`,`practical_ID`),
+  ADD KEY `lab_ID` (`lab_ID`),
+  ADD KEY `practical_ID` (`practical_ID`),
+  ADD KEY `instructor_ID` (`instructor_ID`);
+
+--
 -- Indexes for table `lecturers`
 --
 ALTER TABLE `lecturers`
@@ -450,10 +426,10 @@ ALTER TABLE `lecturers`
 -- Indexes for table `practical_assign_info`
 --
 ALTER TABLE `practical_assign_info`
-  ADD KEY `Subject_ID` (`Subject_ID`),
-  ADD KEY `Practical_ID` (`Practical_ID`),
-  ADD KEY `Lab_code` (`Lab_code`),
-  ADD KEY `To_ID` (`To_ID`);
+  ADD PRIMARY KEY (`subject_ID`,`practical_ID`),
+  ADD KEY `lab_ID` (`lab_ID`),
+  ADD KEY `practical_ID` (`practical_ID`),
+  ADD KEY `instructor_ID` (`instructor_ID`);
 
 --
 -- Indexes for table `practical_info`
@@ -494,74 +470,34 @@ ALTER TABLE `users`
 --
 
 --
--- Constraints for table `enrollment`
---
-ALTER TABLE `enrollment`
-  ADD CONSTRAINT `enrollment_ibfk_1` FOREIGN KEY (`Student_ID`) REFERENCES `student` (`ID`),
-  ADD CONSTRAINT `enrollment_ibfk_2` FOREIGN KEY (`Subject_ID`) REFERENCES `subjects` (`course_code`),
-  ADD CONSTRAINT `enrollment_ibfk_3` FOREIGN KEY (`Lecturer_ID`) REFERENCES `lecturers` (`ID`),
-  ADD CONSTRAINT `enrollment_ibfk_4` FOREIGN KEY (`Instructor_ID`) REFERENCES `instructors` (`ID`);
-
---
--- Constraints for table `instructors`
---
-ALTER TABLE `instructors`
-  ADD CONSTRAINT `instructors_ibfk_1` FOREIGN KEY (`ID`) REFERENCES `users` (`ID`),
-  ADD CONSTRAINT `instructors_ibfk_2` FOREIGN KEY (`Dept_ID`) REFERENCES `department` (`DeptID`);
-
---
 -- Constraints for table `instruments_info`
 --
 ALTER TABLE `instruments_info`
   ADD CONSTRAINT `instruments_info_ibfk_1` FOREIGN KEY (`Lab_code`) REFERENCES `laboratory` (`Lab_code`);
 
 --
--- Constraints for table `laboratory`
+-- Constraints for table `lab_booking`
 --
-ALTER TABLE `laboratory`
-  ADD CONSTRAINT `laboratory_ibfk_1` FOREIGN KEY (`Dept_ID`) REFERENCES `department` (`DeptID`);
-
---
--- Constraints for table `lecturers`
---
-ALTER TABLE `lecturers`
-  ADD CONSTRAINT `lecturers_ibfk_1` FOREIGN KEY (`ID`) REFERENCES `users` (`ID`),
-  ADD CONSTRAINT `lecturers_ibfk_2` FOREIGN KEY (`Dept_ID`) REFERENCES `department` (`DeptID`);
+ALTER TABLE `lab_booking`
+  ADD CONSTRAINT `lab_booking_ibfk_1` FOREIGN KEY (`subject_ID`) REFERENCES `subjects` (`course_code`),
+  ADD CONSTRAINT `lab_booking_ibfk_2` FOREIGN KEY (`lab_ID`) REFERENCES `laboratory` (`Lab_code`),
+  ADD CONSTRAINT `lab_booking_ibfk_3` FOREIGN KEY (`practical_ID`) REFERENCES `practical_info` (`Practical_ID`),
+  ADD CONSTRAINT `lab_booking_ibfk_4` FOREIGN KEY (`instructor_ID`) REFERENCES `instructors` (`ID`);
 
 --
 -- Constraints for table `practical_assign_info`
 --
 ALTER TABLE `practical_assign_info`
-  ADD CONSTRAINT `practical_assign_info_ibfk_1` FOREIGN KEY (`Subject_ID`) REFERENCES `subjects` (`course_code`),
-  ADD CONSTRAINT `practical_assign_info_ibfk_2` FOREIGN KEY (`Practical_ID`) REFERENCES `practical_info` (`Practical_ID`),
-  ADD CONSTRAINT `practical_assign_info_ibfk_3` FOREIGN KEY (`Lab_code`) REFERENCES `laboratory` (`Lab_code`),
-  ADD CONSTRAINT `practical_assign_info_ibfk_4` FOREIGN KEY (`To_ID`) REFERENCES `technical_officer` (`ID`);
+  ADD CONSTRAINT `practical_assign_info_ibfk_1` FOREIGN KEY (`subject_ID`) REFERENCES `subjects` (`course_code`),
+  ADD CONSTRAINT `practical_assign_info_ibfk_2` FOREIGN KEY (`lab_ID`) REFERENCES `laboratory` (`Lab_code`),
+  ADD CONSTRAINT `practical_assign_info_ibfk_3` FOREIGN KEY (`practical_ID`) REFERENCES `practical_info` (`Practical_ID`),
+  ADD CONSTRAINT `practical_assign_info_ibfk_4` FOREIGN KEY (`instructor_ID`) REFERENCES `instructors` (`ID`);
 
 --
 -- Constraints for table `practical_info`
 --
 ALTER TABLE `practical_info`
   ADD CONSTRAINT `practical_info_ibfk_1` FOREIGN KEY (`Subject_ID`) REFERENCES `subjects` (`course_code`);
-
---
--- Constraints for table `student`
---
-ALTER TABLE `student`
-  ADD CONSTRAINT `student_ibfk_1` FOREIGN KEY (`ID`) REFERENCES `users` (`ID`),
-  ADD CONSTRAINT `student_ibfk_2` FOREIGN KEY (`Dept_ID`) REFERENCES `department` (`DeptID`);
-
---
--- Constraints for table `subjects`
---
-ALTER TABLE `subjects`
-  ADD CONSTRAINT `subjects_ibfk_1` FOREIGN KEY (`Dept_ID`) REFERENCES `department` (`DeptID`);
-
---
--- Constraints for table `technical_officer`
---
-ALTER TABLE `technical_officer`
-  ADD CONSTRAINT `technical_officer_ibfk_1` FOREIGN KEY (`ID`) REFERENCES `users` (`ID`),
-  ADD CONSTRAINT `technical_officer_ibfk_2` FOREIGN KEY (`Dept_ID`) REFERENCES `department` (`DeptID`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
