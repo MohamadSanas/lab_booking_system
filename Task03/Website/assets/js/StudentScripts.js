@@ -185,7 +185,7 @@ function bookFunction(event) {
 
   const labSelect = row.querySelector('.lab-code');
   const labCode = labSelect.value;
-  
+
   const labDate = row.querySelector('.lab-date').value;
   const labTime = row.querySelector('.lab-time').value;
 
@@ -360,3 +360,82 @@ function showInstruments(select) {
       instrumentDiv.innerHTML = "Error loading instruments.";
     });
 }
+
+function loadStudentLabs() {
+  const tbody     = document.getElementById('labTableBody');
+  const noLabsRow = document.getElementById('noLabsRow');
+
+  fetch('backend/getStudentLabs.php')
+    .then(res => res.json())
+    .then(data => {
+      tbody.innerHTML = ''; // clear existing rows
+
+      if (!data.success || data.labs.length === 0) {
+        noLabsRow.style.display = 'table-row';
+        return;
+      }
+
+      noLabsRow.style.display = 'none';
+      const today = new Date();
+      today.setHours(0, 0, 0, 0); // Normalize today's date
+
+      data.labs.forEach(lab => {
+        const labDate = new Date(lab.schedule_date);
+        labDate.setHours(0, 0, 0, 0); // Normalize lab date
+
+        let statusCell = '';
+
+        if (labDate.getTime() === today.getTime()) {
+          statusCell = `
+            <button class="btn btn-success btn-sm" onclick="markAttendance('${lab.subject_ID}', '${lab.practical_ID}', true)">Attended</button>
+            <button class="btn btn-danger btn-sm" onclick="markAttendance('${lab.subject_ID}', '${lab.practical_ID}', false)">Not Attended</button>
+          `;
+        } else if (labDate.getTime() < today.getTime()) {
+          statusCell = `<span class="badge badge-danger">Missed</span>`;
+        } else {
+          statusCell = `<span class="badge badge-info">Scheduled</span>`;
+        }
+
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${lab.subject_ID}</td>
+          <td>${lab.course_name}</td>
+          <td>${lab.practical_name}</td>
+          <td>${lab.lab_ID}</td>
+          <td>${lab.schedule_date}</td>
+          <td>${lab.schedule_time}</td>
+          <td>${statusCell}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    })
+    .catch(err => {
+      console.error('Error loading student labs:', err);
+      alert('Failed to load labs');
+    });
+}
+
+function markAttendance(subject_ID, practical_ID, attended) {
+  const msg = attended ? 'Marked as Attended' : 'Marked as Not Attended';
+  alert(`${msg} for ${subject_ID} - ${practical_ID}`);
+
+  // Optional: Add fetch POST to backend to save attendance in database
+}
+
+
+function addNewLab() {
+  const template = document.getElementById('new-Course-Table');
+  const clone = template.content.cloneNode(true);
+  const tbody = document.getElementById('courseTableBody');
+
+  // Hide "No Course added yet" row if visible
+  const noCourseRow = document.getElementById('noCourseRow');
+  if (noCourseRow) noCourseRow.style.display = 'none';
+
+  tbody.appendChild(clone);
+}
+
+
+
+
+

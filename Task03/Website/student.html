@@ -134,7 +134,9 @@
             <td colspan="7" class="text-center">No Labs yet</td>
           </tr>
         </thead>
-        <tbody id="labTableBody"></tbody>
+        <tbody id="labTableBody">
+
+        </tbody>
       </table>
     </div>
   </section>
@@ -151,6 +153,7 @@
       document.getElementById('courseSection').style.display = 'none';
       document.getElementById('labSection').style.display = 'block';
       // loadStudentLabs(); // Uncomment if you implement this function in your JS
+      loadStudentLabs();
     }
   </script>
 
