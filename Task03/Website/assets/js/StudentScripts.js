@@ -77,53 +77,23 @@ function fetchCourseInfo(input) {
 
 // Save (enroll) course for student
 function saveFunction(event) {
-  const btn = event.target;
-  const row = btn.closest('tr');
+  const row = event.target.closest("tr");
+  const codeInput = row.querySelector("td:nth-child(1) input");
+  const courseCode = codeInput.value.trim();
 
-  const courseCodeInput = row.querySelector('input[placeholder="course code"]');
-  const courseNameInput = row.querySelector('input[placeholder="course name"]');
-  const creditInput = row.querySelector('input[placeholder="credit"]');
-  const hoursInput = row.querySelector('input[placeholder="hours"]');
+  if (!courseCode) return alert("Enter course code");
 
-  const courseCode = courseCodeInput.value.trim().toUpperCase();
-  const courseName = courseNameInput.value.trim();
-  const credit = creditInput.value.trim();
-  const hours = hoursInput.value.trim();
-
-  if (!courseCode) {
-    alert("Please enter a course code");
-    return;
-  }
-
-  if (!courseName) {
-    alert("Invalid course code or course not found.");
-    return;
-  }
-
-  fetch('backend/enrollCourse.php', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      student_ID: student_ID,  // Make sure student_ID is defined globally
-      subject_ID: courseCode,
-      subject_name: courseName,
-      credit: credit,
-      hours: hours
-    })
-  })
-    .then(res => res.json())
-    .then(data => {
-      if (data.success) {
-        alert('Course enrolled successfully');
-        makeRowPermanent(row);
-      } else {
-        alert('Failed to enroll course: ' + data.message);
-      }
-    })
-    .catch(err => {
-      console.error(err);
-      alert('Error during enrollment');
-    });
+  $.post("backend/enrollCourse.php", { course_code: courseCode }, function (res) {
+    if (res.success) {
+      alert(res.message);
+      // Disable inputs
+      row.querySelectorAll("input").forEach((input) => input.setAttribute("readonly", true));
+      // Remove Save button
+      event.target.remove();
+    } else {
+      alert(res.message);
+    }
+  }, "json");
 }
 
 // After successful enrollment, disable editing and update buttons
@@ -150,38 +120,23 @@ function cancelFunction(button) {
 }
 
 // Delete enrolled course for student
-function deleteCourse(button) {
-  const row = button.closest('tr');
-  const courseCode = row.querySelector('input[placeholder="course code"]').value.trim().toUpperCase();
+function cancelFunction(btn) {
+  const row = btn.closest("tr");
+  const code = row.querySelector("td:nth-child(1) input").value.trim();
 
-  if (!confirm('Are you sure you want to delete this enrolled course?')) return;
+  if (!code) {
+    row.remove();
+    return;
+  }
 
-  fetch('backend/deleteEnrollCourse.php', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      student_ID: student_ID,
-      subject_ID: courseCode
-    })
-  })
-    .then(res => res.json())
-    .then(data => {
-      if (data.success) {
-        alert('Course enrollment deleted');
-        row.remove();
-
-        if (document.querySelectorAll('#courseTableBody tr').length === 0) {
-          const noCourseRow = document.getElementById('noCourseRow');
-          if (noCourseRow) noCourseRow.style.display = '';
-        }
-      } else {
-        alert('Failed to delete enrollment: ' + data.message);
-      }
-    })
-    .catch(err => {
-      console.error(err);
-      alert('Error deleting enrollment');
-    });
+  $.post("backend/deleteEnrollment.php", { course_code: code }, function (res) {
+    if (res.success) {
+      row.remove();
+      alert(res.message);
+    } else {
+      alert(res.message);
+    }
+  }, "json");
 }
 
 // Load student lab bookings
@@ -224,10 +179,13 @@ function bookFunction(event) {
   const row = event.target.closest('tr');
 
   const courseCode = row.querySelector('.course-code').value.trim();
+
   const practicalSelect = row.querySelector('.practical-id');
   const practicalID = practicalSelect.value;
+
   const labSelect = row.querySelector('.lab-code');
   const labCode = labSelect.value;
+  
   const labDate = row.querySelector('.lab-date').value;
   const labTime = row.querySelector('.lab-time').value;
 

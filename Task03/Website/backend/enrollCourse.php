@@ -1,43 +1,54 @@
 <?php
+// backend/enrollCourse.php
+session_start(); // Ensure session is started to get student ID
+
 header('Content-Type: application/json');
-require 'db.php';
 
-$data = json_decode(file_get_contents('php://input'), true);
 
-$student_ID = $data['student_ID'] ?? '';
-$subject_ID = $data['subject_ID'] ?? '';
-$subject_name = $data['subject_name'] ?? '';
-$credit = $data['credit'] ?? '';
-$hours = $data['hours'] ?? '';
 
-if (!$student_ID || !$subject_ID || !$subject_name) {
-    echo json_encode(['success' => false, 'message' => 'Missing required fields']);
+$student_ID = $_SESSION['userID'] ?? '';
+$student_role= $_SESSION['role'] ?? '';
+
+
+
+if (!isset($_POST['course_code']) || empty($_POST['course_code'])) {
+    echo json_encode(['success' => false, 'message' => 'Course code is required.']);
     exit;
 }
 
-// Check if already enrolled
-$stmt = $conn->prepare("SELECT * FROM enrollments WHERE student_ID = ? AND subject_ID = ?");
-$stmt->bind_param("ss", $student_ID, $subject_ID);
+$course_code = trim($_POST['course_code']);
+
+$conn = new mysqli("localhost", "root", "", "laboratory_booking_system");
+
+if ($conn->connect_error) {
+    echo json_encode(['success' => false, 'message' => 'DB connection failed.']);
+    exit;
+}
+
+// Fetch course info
+$stmt = $conn->prepare("SELECT name FROM subjects WHERE course_code = ?");
+$stmt->bind_param("s", $course_code);
 $stmt->execute();
-$result = $stmt->get_result();
+$stmt->store_result();
 
-if ($result->num_rows > 0) {
-    echo json_encode(['success' => false, 'message' => 'Already enrolled']);
-    $stmt->close();
-    $conn->close();
+if ($stmt->num_rows === 0) {
+    echo json_encode(['success' => false, 'message' => 'Course not found.']);
     exit;
 }
+
+$stmt->bind_result($course_name);
+$stmt->fetch();
 $stmt->close();
 
-// Insert enrollment
-$stmt = $conn->prepare("INSERT INTO enrollments (student_ID, subject_ID, subject_name, credit, hours) VALUES (?, ?, ?, ?, ?)");
-$stmt->bind_param("sssss", $student_ID, $subject_ID, $subject_name, $credit, $hours);
+// Insert into enroll_course
+$insert = $conn->prepare("INSERT INTO enroll_course (student_ID, subject_ID, subject_name) VALUES (?, ?, ?)");
+$insert->bind_param("sss", $student_ID, $course_code, $course_name);
 
-if ($stmt->execute()) {
-    echo json_encode(['success' => true]);
+if ($insert->execute()) {
+    echo json_encode(['success' => true, 'message' => 'Course enrolled successfully']);
 } else {
-    echo json_encode(['success' => false, 'message' => 'Enrollment failed']);
+    echo json_encode(['success' => false, 'message' => 'Enrollment failed or already enrolled.']);
 }
 
-$stmt->close();
+$insert->close();
 $conn->close();
