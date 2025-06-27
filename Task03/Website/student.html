@@ -2,21 +2,34 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Course Register</title>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"/>
-  <link rel="stylesheet" href="assets/css/StudentStyle.css?v=2"/>
+  <link
+    rel="stylesheet"
+    href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+  />
+  <link rel="stylesheet" href="assets/css/StudentStyle.css?v=2" />
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"
+  ></script>
+  <script
+    src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+  ></script>
 </head>
 
 <body>
-  <nav class="navbar navbar-dark d-flex justify-content-between align-items-center">
-    <span class="navbar_content">UNIVERSITY OF JAFFNA - FACULTY OF ENGINEERING</span>
+  <nav class="navbar navbar-dark bg-dark d-flex justify-content-between align-items-center px-3">
+    <span class="navbar_content text-white font-weight-bold">
+      UNIVERSITY OF JAFFNA - FACULTY OF ENGINEERING
+    </span>
     <div>
-      <button class="btn btn-outline-light btn-sm mr-2" onclick="showCourses()">View Courses</button>
-      <button class="btn btn-outline-light btn-sm" onclick="showLabs()">View Labs</button>
+      <button class="btn btn-outline-light btn-sm mr-2" onclick="showCourses()">
+        View Courses
+      </button>
+      <button class="btn btn-outline-light btn-sm" onclick="showLabs()">
+        View Labs
+      </button>
     </div>
   </nav>
 
@@ -44,11 +57,14 @@
         </div>
       </div>
 
-      <table id="courseTable" class="table table-sm table-bordered table-striped">
+      <table
+        id="courseTable"
+        class="table table-sm table-bordered table-striped"
+      >
         <thead>
           <tr>
             <th style="width: 20%;">Course Code</th>
-            <th style="width: 30%">Name</th>
+            <th style="width: 30%;">Name</th>
             <th style="width: 15%;">Credits</th>
             <th style="width: 15%;">Hours</th>
             <th style="width: 20%;">Action</th>
@@ -62,13 +78,30 @@
 
       <template id="new-Course-Table">
         <tr class="new-course-row">
-          <td><input type="text" class="form-control" placeholder="course code" onblur="fetchCourseInfo(this)" /></td>
-          <td><input type="text" class="form-control" placeholder="course name" readonly /></td>
-          <td><input type="number" class="form-control" placeholder="credit" readonly /></td>
-          <td><input type="number" class="form-control" placeholder="hours" readonly /></td>
           <td>
-            <button class="btn btn-success btn-sm" onclick="saveFunction(event)">Save</button>
-            <button class="btn btn-danger btn-sm" onclick="cancelFunction(this)">Cancel</button>
+            <input
+              type="text"
+              class="form-control"
+              placeholder="course code"
+              onblur="fetchCourseInfo(this)"
+            />
+          </td>
+          <td>
+            <input type="text" class="form-control" placeholder="course name" readonly />
+          </td>
+          <td>
+            <input type="number" class="form-control" placeholder="credit" readonly />
+          </td>
+          <td>
+            <input type="number" class="form-control" placeholder="hours" readonly />
+          </td>
+          <td>
+            <button class="btn btn-success btn-sm" onclick="saveFunction(event)">
+              Save
+            </button>
+            <button class="btn btn-danger btn-sm" onclick="cancelFunction(this)">
+              Cancel
+            </button>
           </td>
         </tr>
       </template>
@@ -78,22 +111,24 @@
       </div>
     </div>
 
-    <!-- Lab Section -->
+    <!-- Lab Section (hidden initially) -->
     <div id="labSection" style="display: none;">
       <div class="greet mb-4">
         <h3 class="page_greet">Lab Details</h3>
       </div>
 
-      <table class="table table-sm table-bordered table-striped">
+      <table
+        class="table table-sm table-bordered table-striped"
+      >
         <thead>
           <tr>
             <th style="width: 15%;">Course Code</th>
-            <th style="width: 20%">Course Name</th>
+            <th style="width: 20%;">Course Name</th>
             <th style="width: 13%;">Lab Name</th>
             <th style="width: 12%;">Lab Code</th>
             <th style="width: 15%;">Date</th>
             <th style="width: 15%;">Time</th>
-            <th style="width:10%">Status</th>
+            <th style="width: 10%;">Status</th>
           </tr>
           <tr id="noLabsRow">
             <td colspan="7" class="text-center">No Labs yet</td>
@@ -105,19 +140,21 @@
   </section>
 
   <script>
+    // Show course section, hide labs
     function showCourses() {
       document.getElementById('courseSection').style.display = 'block';
       document.getElementById('labSection').style.display = 'none';
     }
 
+    // Show lab section, hide courses (you should implement loadStudentLabs() in JS)
     function showLabs() {
       document.getElementById('courseSection').style.display = 'none';
       document.getElementById('labSection').style.display = 'block';
-      loadStudentLabs(); // Optional: Implemented in StudentScripts.js
+      // loadStudentLabs(); // Uncomment if you implement this function in your JS
     }
   </script>
 
-  <!-- 🔗 Connect your JS -->
+  <!-- Link to your external JS -->
   <script src="assets/js/StudentScripts.js?v=5"></script>
 </body>
 </html>

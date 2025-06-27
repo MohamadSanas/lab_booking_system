@@ -6,7 +6,7 @@ $student_ID = $data['student_ID'] ?? '';
 $subject_ID = $data['subject_ID'] ?? '';
 
 if (!$student_ID || !$subject_ID) {
-    echo json_encode(['success' => false, 'message' => 'Missing student or subject ID']);
+    echo json_encode(['success' => false, 'message' => 'Missing required data']);
     exit;
 }
 

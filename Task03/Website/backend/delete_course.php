@@ -1,16 +1,25 @@
 <?php
-session_start();
-$conn = new mysqli("localhost", "root", "", "laboratory_booking_system");
+header('Content-Type: application/json');
+require 'db.php';
 
-$data = json_decode(file_get_contents("php://input"), true);
-$student_ID = $_SESSION['student_ID'];
-$subject_ID = $data['subject_ID'];
+$data = json_decode(file_get_contents('php://input'), true);
 
-$stmt = $conn->prepare("DELETE FROM enroll_course WHERE student_ID = ? AND subject_ID = ?");
+$student_ID = $data['student_ID'] ?? '';
+$subject_ID = $data['subject_ID'] ?? '';
+
+if (!$student_ID || !$subject_ID) {
+    echo json_encode(['success' => false, 'message' => 'Missing required fields']);
+    exit;
+}
+
+$stmt = $conn->prepare("DELETE FROM enrollments WHERE student_ID = ? AND subject_ID = ?");
 $stmt->bind_param("ss", $student_ID, $subject_ID);
 
 if ($stmt->execute()) {
-  echo "success";
+    echo json_encode(['success' => true]);
 } else {
-  echo "error";
+    echo json_encode(['success' => false, 'message' => 'Deletion failed']);
 }
+
+$stmt->close();
+$conn->close();

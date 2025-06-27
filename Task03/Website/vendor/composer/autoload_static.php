@@ -4,8 +4,51 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit7cfe091b1dda6977c696d0f5d70643a8
+class ComposerStaticInit1d9e4248d4ebd1eda1181fa24830fb09
 {
+    public static $prefixLengthsPsr4 = array (
+        'S' => 
+        array (
+            'Svg\\' => 4,
+            'Sabberworm\\CSS\\' => 15,
+        ),
+        'M' => 
+        array (
+            'Masterminds\\' => 12,
+        ),
+        'F' => 
+        array (
+            'FontLib\\' => 8,
+        ),
+        'D' => 
+        array (
+            'Dompdf\\' => 7,
+        ),
+    );
+
+    public static $prefixDirsPsr4 = array (
+        'Svg\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/dompdf/php-svg-lib/src/Svg',
+        ),
+        'Sabberworm\\CSS\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/sabberworm/php-css-parser/src',
+        ),
+        'Masterminds\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/masterminds/html5/src',
+        ),
+        'FontLib\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/dompdf/php-font-lib/src/FontLib',
+        ),
+        'Dompdf\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/dompdf/dompdf/src',
+        ),
+    );
+
     public static $classMap = array (
         'CGIF' => __DIR__ . '/..' . '/mpdf/mpdf/classes/gif.php',
         'CGIFCOLORTABLE' => __DIR__ . '/..' . '/mpdf/mpdf/classes/gif.php',
@@ -14,6 +57,7 @@ class ComposerStaticInit7cfe091b1dda6977c696d0f5d70643a8
         'CGIFIMAGEHEADER' => __DIR__ . '/..' . '/mpdf/mpdf/classes/gif.php',
         'CGIFLZW' => __DIR__ . '/..' . '/mpdf/mpdf/classes/gif.php',
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
+        'Dompdf\\Cpdf' => __DIR__ . '/..' . '/dompdf/dompdf/lib/Cpdf.php',
         'FPDF_TPL' => __DIR__ . '/..' . '/setasign/fpdi/fpdf_tpl.php',
         'FPDI' => __DIR__ . '/..' . '/setasign/fpdi/fpdi.php',
         'FilterASCII85' => __DIR__ . '/..' . '/setasign/fpdi/filters/FilterASCII85.php',
@@ -45,7 +89,9 @@ class ComposerStaticInit7cfe091b1dda6977c696d0f5d70643a8
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->classMap = ComposerStaticInit7cfe091b1dda6977c696d0f5d70643a8::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit1d9e4248d4ebd1eda1181fa24830fb09::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit1d9e4248d4ebd1eda1181fa24830fb09::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit1d9e4248d4ebd1eda1181fa24830fb09::$classMap;
 
         }, null, ClassLoader::class);
     }
