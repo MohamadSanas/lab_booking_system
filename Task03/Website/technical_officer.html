@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Technical officer - Lab</title>
+  <title>Technical Officer - Lab</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"/>
   <link rel="stylesheet" href="assets/css/technicalOfficer.css"/>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -14,8 +14,36 @@
     <span class="navbar-brand">UNIVERSITY OF JAFFNA - FACULTY OF ENGINEERING</span>
   </nav>
 
+  <!-- ✅ Booking Details Table -->
   <div class="container mt-4">
-    <h3 class="mb-3">Lab Booking Log</h3>
+    <h3 class="mb-3">Laboratory Booking Details</h3>
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped table-sm">
+        <thead class="thead-dark">
+          <tr>
+            <th>Subject ID</th>
+            <th>Practical ID</th>
+            <th>Lab ID</th>
+            <th>Instructor ID</th>
+            <th>Date</th>
+            <th>Time</th>
+          </tr>
+        </thead>
+        <tbody id="bookingTableBody">
+          <tr><td colspan="6" class="text-center">Loading...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="d-flex justify-content-center mt-3 mb-5">
+    <a href="backend/genrate_lab_Booking.php" target="_blank" class="btn btn-primary">Generate PDF</a>
+  </div>
+
+
+  <!-- ✅ Log Table with Action -->
+  <div class="container mt-4">
+    <h3 class="mb-3">Laboratory Log</h3>
     <div class="table-responsive">
       <table class="table table-bordered table-striped table-sm">
         <thead class="thead-dark">
@@ -29,28 +57,30 @@
             <th>Action</th>
           </tr>
         </thead>
-        <tbody id="bookingLogBody">
+        <tbody id="logTableBody">
           <tr><td colspan="7" class="text-center">Loading...</td></tr>
         </tbody>
       </table>
     </div>
-
-    <!-- ✅ PDF Button -->
-    <div class="text-right mt-3 mb-5">
-      <a href="backend/generate_lab_log_pdf.php" target="_blank" class="btn btn-primary">Generate PDF</a>
-    </div>
   </div>
 
+  <!-- ✅ PDF Button -->
+  <div class="d-flex justify-content-center mt-3 mb-5">
+    <a href="backend/generate_lab_log_pdf.php" target="_blank" class="btn btn-primary">Generate PDF</a>
+  </div>
+
+  <!-- ✅ Scripts to Load Data -->
   <script>
-    function loadLabLog() {
-      fetch('backend/fetch_lab_log.php')
+    // Load Booking Table (without action)
+    function loadLabBooking() {
+      fetch('backend/fetch_lab_booking.php')
         .then(res => res.json())
         .then(data => {
-          const tbody = document.getElementById("bookingLogBody");
+          const tbody = document.getElementById("bookingTableBody");
           tbody.innerHTML = "";
 
           if (!data.success || data.data.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="7" class="text-center">No booking records found</td></tr>`;
+            tbody.innerHTML = `<tr><td colspan="6" class="text-center">No booking records found</td></tr>`;
             return;
           }
 
@@ -63,19 +93,56 @@
               <td>${item.instructor_ID || '-'}</td>
               <td>${item.schedule_date}</td>
               <td>${item.schedule_time}</td>
-              <td>${item.action}</td>
             `;
             tbody.appendChild(tr);
           });
         })
         .catch(err => {
-          console.error("Error loading log:", err);
-          document.getElementById("bookingLogBody").innerHTML =
+          console.error("Error loading booking data:", err);
+          document.getElementById("bookingTableBody").innerHTML =
+            `<tr><td colspan="6" class="text-center">Error loading data</td></tr>`;
+        });
+    }
+
+    // Load Log Table (with action column)
+    function loadLabLog() {
+      fetch('backend/fetch_lab_log.php')
+        .then(res => res.json())
+        .then(data => {
+          const tbody = document.getElementById("logTableBody");
+          tbody.innerHTML = "";
+
+          if (!data.success || data.data.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="7" class="text-center">No lab logs found</td></tr>`;
+            return;
+          }
+
+          data.data.forEach(item => {
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+              <td>${item.subject_ID}</td>
+              <td>${item.practical_ID}</td>
+              <td>${item.lab_ID}</td>
+              <td>${item.instructor_ID || '-'}</td>
+              <td>${item.schedule_date}</td>
+              <td>${item.schedule_time}</td>
+              <td>${item.action || '-'}</td>
+            `;
+            tbody.appendChild(tr);
+          });
+        })
+        .catch(err => {
+          console.error("Error loading lab log:", err);
+          document.getElementById("logTableBody").innerHTML =
             `<tr><td colspan="7" class="text-center">Error loading data</td></tr>`;
         });
     }
 
-    window.onload = loadLabLog;
+    // Load both tables when page loads
+    window.onload = () => {
+      loadLabBooking();
+      loadLabLog();
+    };
   </script>
 </body>
 </html>

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 26, 2025 at 09:18 PM
+-- Generation Time: Jun 28, 2025 at 09:26 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -32,6 +32,17 @@ CREATE TABLE `enroll_course` (
   `subject_ID` varchar(6) NOT NULL,
   `subject_name` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `enroll_course`
+--
+
+INSERT INTO `enroll_course` (`student_ID`, `subject_ID`, `subject_name`) VALUES
+('S001', 'EC5020', 'Digital Design'),
+('S001', 'EC5080', 'Software Construction'),
+('san099', 'EC5020', 'Digital Design'),
+('san099', 'EC5070', 'Database Management'),
+('san099', 'EC5080', 'Software Construction');
 
 -- --------------------------------------------------------
 
@@ -134,9 +145,10 @@ CREATE TABLE `lab_booking` (
 --
 
 INSERT INTO `lab_booking` (`subject_ID`, `practical_ID`, `lab_ID`, `instructor_ID`, `schedule_date`, `schedule_time`, `action`) VALUES
-('EC5020', 'PR007', 'EEE01', 'I001', '2025-06-25', '12:38:00', 'Finished'),
-('EC5070', 'PR004', 'COM01', 'I001', '2025-06-27', '00:30:00', 'Canceled'),
-('EC5080', 'PR001', 'COM01', 'I001', '2025-06-25', '01:11:00', 'Finished');
+('EC5020', 'PR007', 'EEE01', 'I001', '2025-06-30', '13:00:00', 'Finished'),
+('EC5070', 'PR004', 'COM02', 'I001', '2025-06-28', '08:00:00', 'Canceled'),
+('EC5080', 'PR001', 'COM02', 'I001', '2025-06-29', '09:00:00', 'Finished'),
+('EC5080', 'PR002', 'COM02', 'I002', '2025-07-06', '01:46:00', 'Finished');
 
 -- --------------------------------------------------------
 
@@ -183,7 +195,7 @@ CREATE TABLE `practical_assign_info` (
 --
 
 INSERT INTO `practical_assign_info` (`subject_ID`, `practical_ID`, `lab_ID`, `instructor_ID`, `schedule_date`, `schedule_time`) VALUES
-('EC5080', 'PR001', 'COM02', 'I001', '2025-06-27', '08:00:00');
+('EC5080', 'PR001', 'COM02', 'I001', '2025-06-28', '13:00:00');
 
 -- --------------------------------------------------------
 
@@ -329,6 +341,25 @@ INSERT INTO `technical_officer` (`ID`, `name`, `address`, `gender`, `Dept_ID`, `
 ('T002', 'Bob Tan', '34 Pine Rd.', 'Male', 'CE', '710001002', 'bob.tan@uni.edu'),
 ('T003', 'Chitra Silva', '56 Maple Ave.', 'Female', 'EEE', '710001003', 'chitra.silva@uni.edu'),
 ('T004', 'David Perera', '78 Elm Blvd.', 'Male', 'EEE', '710001004', 'david.perera@uni.edu');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `technical_officer_assign`
+--
+
+CREATE TABLE `technical_officer_assign` (
+  `TO_ID` varchar(20) NOT NULL,
+  `Lab_ID` varchar(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `technical_officer_assign`
+--
+
+INSERT INTO `technical_officer_assign` (`TO_ID`, `Lab_ID`) VALUES
+('T001', 'COM01'),
+('T002', 'COM02');
 
 -- --------------------------------------------------------
 
@@ -502,6 +533,13 @@ ALTER TABLE `technical_officer`
   ADD KEY `Dept_ID` (`Dept_ID`);
 
 --
+-- Indexes for table `technical_officer_assign`
+--
+ALTER TABLE `technical_officer_assign`
+  ADD PRIMARY KEY (`TO_ID`,`Lab_ID`),
+  ADD KEY `Lab_ID` (`Lab_ID`);
+
+--
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
@@ -547,6 +585,13 @@ ALTER TABLE `practical_assign_info`
 --
 ALTER TABLE `practical_info`
   ADD CONSTRAINT `practical_info_ibfk_1` FOREIGN KEY (`Subject_ID`) REFERENCES `subjects` (`course_code`);
+
+--
+-- Constraints for table `technical_officer_assign`
+--
+ALTER TABLE `technical_officer_assign`
+  ADD CONSTRAINT `technical_officer_assign_ibfk_1` FOREIGN KEY (`TO_ID`) REFERENCES `users` (`ID`),
+  ADD CONSTRAINT `technical_officer_assign_ibfk_2` FOREIGN KEY (`Lab_ID`) REFERENCES `laboratory` (`Lab_code`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
