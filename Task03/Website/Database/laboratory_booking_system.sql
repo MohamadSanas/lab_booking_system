@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 28, 2025 at 09:26 AM
+-- Generation Time: Jun 28, 2025 at 03:28 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -20,6 +20,25 @@ SET time_zone = "+00:00";
 --
 -- Database: `laboratory_booking_system`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `department`
+--
+
+CREATE TABLE `department` (
+  `Dept_ID` varchar(20) NOT NULL,
+  `Name` varchar(200) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `department`
+--
+
+INSERT INTO `department` (`Dept_ID`, `Name`) VALUES
+('CE', 'Department of Computer Engineering'),
+('EEE', 'Department of Electrical and Electronics Engineering');
 
 -- --------------------------------------------------------
 
@@ -304,7 +323,7 @@ CREATE TABLE `subjects` (
   `course_code` varchar(6) NOT NULL,
   `name` varchar(50) NOT NULL,
   `credit` int(11) NOT NULL,
-  `Dept_ID` varchar(20) DEFAULT NULL
+  `Dept_ID` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -452,6 +471,12 @@ INSERT INTO `users` (`ID`, `password`, `role`) VALUES
 --
 
 --
+-- Indexes for table `department`
+--
+ALTER TABLE `department`
+  ADD PRIMARY KEY (`Dept_ID`);
+
+--
 -- Indexes for table `enroll_course`
 --
 ALTER TABLE `enroll_course`
@@ -557,10 +582,22 @@ ALTER TABLE `enroll_course`
   ADD CONSTRAINT `enroll_course_ibfk_2` FOREIGN KEY (`subject_ID`) REFERENCES `subjects` (`course_code`);
 
 --
+-- Constraints for table `instructors`
+--
+ALTER TABLE `instructors`
+  ADD CONSTRAINT `fk_Dept_ID` FOREIGN KEY (`Dept_ID`) REFERENCES `department` (`Dept_ID`);
+
+--
 -- Constraints for table `instruments_info`
 --
 ALTER TABLE `instruments_info`
   ADD CONSTRAINT `instruments_info_ibfk_1` FOREIGN KEY (`Lab_code`) REFERENCES `laboratory` (`Lab_code`);
+
+--
+-- Constraints for table `laboratory`
+--
+ALTER TABLE `laboratory`
+  ADD CONSTRAINT `fk_laboratory_dept` FOREIGN KEY (`Dept_ID`) REFERENCES `department` (`Dept_ID`);
 
 --
 -- Constraints for table `lab_booking`
@@ -570,6 +607,12 @@ ALTER TABLE `lab_booking`
   ADD CONSTRAINT `lab_booking_ibfk_2` FOREIGN KEY (`lab_ID`) REFERENCES `laboratory` (`Lab_code`),
   ADD CONSTRAINT `lab_booking_ibfk_3` FOREIGN KEY (`practical_ID`) REFERENCES `practical_info` (`Practical_ID`),
   ADD CONSTRAINT `lab_booking_ibfk_4` FOREIGN KEY (`instructor_ID`) REFERENCES `instructors` (`ID`);
+
+--
+-- Constraints for table `lecturers`
+--
+ALTER TABLE `lecturers`
+  ADD CONSTRAINT `fk_subjects_dept3` FOREIGN KEY (`Dept_ID`) REFERENCES `department` (`Dept_ID`);
 
 --
 -- Constraints for table `practical_assign_info`
@@ -585,6 +628,25 @@ ALTER TABLE `practical_assign_info`
 --
 ALTER TABLE `practical_info`
   ADD CONSTRAINT `practical_info_ibfk_1` FOREIGN KEY (`Subject_ID`) REFERENCES `subjects` (`course_code`);
+
+--
+-- Constraints for table `student`
+--
+ALTER TABLE `student`
+  ADD CONSTRAINT `fk_subjects_dept2` FOREIGN KEY (`Dept_ID`) REFERENCES `department` (`Dept_ID`);
+
+--
+-- Constraints for table `subjects`
+--
+ALTER TABLE `subjects`
+  ADD CONSTRAINT `fk_subjects_dept` FOREIGN KEY (`Dept_ID`) REFERENCES `department` (`Dept_ID`);
+
+--
+-- Constraints for table `technical_officer`
+--
+ALTER TABLE `technical_officer`
+  ADD CONSTRAINT `fk_subjects_dept1` FOREIGN KEY (`Dept_ID`) REFERENCES `department` (`Dept_ID`),
+  ADD CONSTRAINT `fk_subjects_dept4` FOREIGN KEY (`Dept_ID`) REFERENCES `department` (`Dept_ID`);
 
 --
 -- Constraints for table `technical_officer_assign`
