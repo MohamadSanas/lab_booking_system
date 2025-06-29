@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 28, 2025 at 03:28 PM
+-- Generation Time: Jun 29, 2025 at 11:25 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -38,7 +38,11 @@ CREATE TABLE `department` (
 
 INSERT INTO `department` (`Dept_ID`, `Name`) VALUES
 ('CE', 'Department of Computer Engineering'),
-('EEE', 'Department of Electrical and Electronics Engineering');
+('CEE', 'Department of Civil and Enviromental Engineering'),
+('EEE', 'Department of Electrical and Electronics Engineering'),
+('IDS', 'Department of Interdisciplinary Studies'),
+('MC', 'Depaprtment of Maths Complementary Studies'),
+('MP', 'Department of Mechanical and Process Engineering');
 
 -- --------------------------------------------------------
 
@@ -57,11 +61,10 @@ CREATE TABLE `enroll_course` (
 --
 
 INSERT INTO `enroll_course` (`student_ID`, `subject_ID`, `subject_name`) VALUES
-('S001', 'EC5020', 'Digital Design'),
 ('S001', 'EC5080', 'Software Construction'),
-('san099', 'EC5020', 'Digital Design'),
 ('san099', 'EC5070', 'Database Management'),
-('san099', 'EC5080', 'Software Construction');
+('san099', 'EC5080', 'Software Construction'),
+('san099', 'EC5110', 'Computer Architucture');
 
 -- --------------------------------------------------------
 
@@ -113,7 +116,43 @@ CREATE TABLE `instruments_info` (
 --
 
 INSERT INTO `instruments_info` (`Instrument_code`, `Name`, `Quantity`, `Lab_code`) VALUES
-('COMPUTER', 'COMPUTERS', 10, 'COM02');
+('COMPUTER', 'COMPUTERS', 10, 'COM02'),
+('INS_CEE01_1', 'Universal Testing Machine', 1, 'CEE01'),
+('INS_CEE01_2', 'Soil Testing Kit', 2, 'CEE01'),
+('INS_CEE01_3', 'Total Station', 2, 'CEE01'),
+('INS_COM01_1', 'Desktop Computer', 15, 'COM01'),
+('INS_COM01_2', 'UPS Backup Unit', 2, 'COM01'),
+('INS_COM01_3', 'LAN Cable Kit', 20, 'COM01'),
+('INS_COM02_1', 'Router', 3, 'COM02'),
+('INS_COM02_2', 'Server Rack', 1, 'COM02'),
+('INS_COM02_3', 'Ethernet Tester', 5, 'COM02'),
+('INS_COM03_1', 'Raspberry Pi Kit', 10, 'COM03'),
+('INS_COM03_2', 'Monitor', 12, 'COM03'),
+('INS_COM03_3', 'Keyboard & Mouse Set', 12, 'COM03'),
+('INS_COM04_1', 'Digital Oscilloscope', 4, 'COM04'),
+('INS_COM04_2', 'Logic Analyzer', 2, 'COM04'),
+('INS_COM04_3', 'Signal Generator', 3, 'COM04'),
+('INS_COM05_1', 'Power Supply Unit', 6, 'COM05'),
+('INS_COM05_2', 'Soldering Station', 3, 'COM05'),
+('INS_COM05_3', 'Digital Multimeter', 8, 'COM05'),
+('INS_EEE01_1', 'Simulation PC', 10, 'EEE01'),
+('INS_EEE01_2', 'Software License (PSPICE)', 10, 'EEE01'),
+('INS_EEE01_3', 'Power Analyzer', 2, 'EEE01'),
+('INS_EEE02_1', 'Resistor Box', 20, 'EEE02'),
+('INS_EEE02_2', 'Capacitor Bank', 15, 'EEE02'),
+('INS_EEE02_3', 'Breadboard Kit', 20, 'EEE02'),
+('INS_EEE03_1', 'CRO Oscilloscope', 4, 'EEE03'),
+('INS_EEE03_2', 'Signal Modulator', 2, 'EEE03'),
+('INS_EEE03_3', 'Spectrum Analyzer', 1, 'EEE03'),
+('INS_EEE04_1', 'Embedded System Board', 5, 'EEE04'),
+('INS_EEE04_2', 'I/O Interface Card', 6, 'EEE04'),
+('INS_EEE04_3', 'Controller Programming Cable', 4, 'EEE04'),
+('INS_EEE05_1', 'Microcontroller Kit', 10, 'EEE05'),
+('INS_EEE05_2', 'Arduino Uno Board', 10, 'EEE05'),
+('INS_EEE05_3', 'Sensor Modules Set', 6, 'EEE05'),
+('INS_MP01_1', 'Lathe Machine', 2, 'MP01'),
+('INS_MP01_2', 'CNC Milling Machine', 1, 'MP01'),
+('INS_MP01_3', 'Welding Set', 3, 'MP01');
 
 -- --------------------------------------------------------
 
@@ -132,6 +171,7 @@ CREATE TABLE `laboratory` (
 --
 
 INSERT INTO `laboratory` (`Lab_code`, `Name`, `Dept_ID`) VALUES
+('CEE01', 'Civil Engineering Lab 01', 'CEE'),
 ('COM01', 'Computer Lab 01', 'CE'),
 ('COM02', 'Computer Lab 02', 'CE'),
 ('COM03', 'Computer Lab 03', 'CE'),
@@ -141,7 +181,8 @@ INSERT INTO `laboratory` (`Lab_code`, `Name`, `Dept_ID`) VALUES
 ('EEE02', 'Circuits Lab', 'EEE'),
 ('EEE03', 'Signals Lab', 'EEE'),
 ('EEE04', 'Systems Lab', 'EEE'),
-('EEE05', 'Microcontrollers Lab', 'EEE');
+('EEE05', 'Microcontrollers Lab', 'EEE'),
+('MP01', 'Mechanical Lab 01', 'MP');
 
 -- --------------------------------------------------------
 
@@ -164,9 +205,8 @@ CREATE TABLE `lab_booking` (
 --
 
 INSERT INTO `lab_booking` (`subject_ID`, `practical_ID`, `lab_ID`, `instructor_ID`, `schedule_date`, `schedule_time`, `action`) VALUES
-('EC5020', 'PR007', 'EEE01', 'I001', '2025-06-30', '13:00:00', 'Finished'),
 ('EC5070', 'PR004', 'COM02', 'I001', '2025-06-28', '08:00:00', 'Canceled'),
-('EC5080', 'PR001', 'COM02', 'I001', '2025-06-29', '09:00:00', 'Finished'),
+('EC5080', 'PR001', 'COM02', 'I001', '2025-06-28', '13:00:00', 'Finished'),
 ('EC5080', 'PR002', 'COM02', 'I002', '2025-07-06', '01:46:00', 'Finished');
 
 -- --------------------------------------------------------
@@ -214,7 +254,7 @@ CREATE TABLE `practical_assign_info` (
 --
 
 INSERT INTO `practical_assign_info` (`subject_ID`, `practical_ID`, `lab_ID`, `instructor_ID`, `schedule_date`, `schedule_time`) VALUES
-('EC5080', 'PR001', 'COM02', 'I001', '2025-06-28', '13:00:00');
+('EC5110', 'PR014', 'COM04', 'I001', '2025-06-29', '08:00:00');
 
 -- --------------------------------------------------------
 
@@ -239,7 +279,60 @@ INSERT INTO `practical_info` (`Practical_ID`, `Name`, `Subject_ID`) VALUES
 ('PR004', 'Simple Database', 'EC5070'),
 ('PR005', 'Course Registration Website', 'EC5070'),
 ('PR006', 'MySQL Operations', 'EC5070'),
-('PR007', 'Logic Gate Simulation', 'EC5020');
+('PR007', 'SQL Basics', 'EC5070'),
+('PR008', 'Database Design', 'EC5070'),
+('PR009', 'Normalization & Indexing', 'EC5070'),
+('PR010', 'Unit Testing', 'EC5080'),
+('PR011', 'Code Refactoring', 'EC5080'),
+('PR012', 'Version Control (Git)', 'EC5080'),
+('PR013', 'MIPS Assembly Programming', 'EC5110'),
+('PR014', 'Memory Hierarchy Simulation', 'EC5110'),
+('PR015', 'Instruction Pipeline Design', 'EC5110'),
+('PR016', 'Truss Analysis', 'CE5010'),
+('PR017', 'Beam Bending Experiment', 'CE5010'),
+('PR018', 'Structural Software Modeling', 'CE5010'),
+('PR019', 'Water Quality Testing', 'CE5020'),
+('PR020', 'Air Pollution Sampling', 'CE5020'),
+('PR021', 'Waste Management Simulation', 'CE5020'),
+('PR022', 'Traffic Flow Simulation', 'CE5030'),
+('PR023', 'Pavement Material Testing', 'CE5030'),
+('PR024', 'Signal Timing Analysis', 'CE5030'),
+('PR025', 'Fourier Transform Analysis', 'EC5011'),
+('PR026', 'Digital Filtering', 'EC5011'),
+('PR027', 'Audio Signal Processing', 'EC5011'),
+('PR028', 'Amplitude Modulation Lab', 'EC5020'),
+('PR029', 'Digital Modulation Techniques', 'EC5020'),
+('PR030', 'Noise Analysis', 'EC5020'),
+('PR031', 'PID Controller Tuning', 'EC5030'),
+('PR032', 'Matlab Control Toolbox', 'EC5030'),
+('PR033', 'Stability Analysis', 'EC5030'),
+('PR034', 'Case Study: Ethical Dilemma', 'IDS601'),
+('PR035', 'Research on Professional Conduct', 'IDS601'),
+('PR036', 'Ethics Presentation', 'IDS601'),
+('PR037', 'Gantt Chart Creation', 'IDS602'),
+('PR038', 'Risk Management Simulation', 'IDS602'),
+('PR039', 'Resource Allocation Lab', 'IDS602'),
+('PR040', 'Technical Report Drafting', 'IDS603'),
+('PR041', 'Research Abstract Writing', 'IDS603'),
+('PR042', 'Presentation Slide Creation', 'IDS603'),
+('PR043', 'Matrix Operations in MATLAB', 'MC6010'),
+('PR044', 'Eigenvalues & Eigenvectors', 'MC6010'),
+('PR045', 'Linear Transformations', 'MC6010'),
+('PR046', 'Probability Distributions', 'MC6020'),
+('PR047', 'Statistical Analysis in R', 'MC6020'),
+('PR048', 'Random Variable Simulation', 'MC6020'),
+('PR049', 'Root Finding Methods', 'MC6030'),
+('PR050', 'Numerical Integration', 'MC6030'),
+('PR051', 'Solving Linear Systems', 'MC6030'),
+('PR052', 'Viscosity Measurement', 'MP6010'),
+('PR053', 'Flow Rate Calculation', 'MP6010'),
+('PR054', 'Hydraulic Jump Analysis', 'MP6010'),
+('PR055', 'Heat Transfer Experiment', 'MP6020'),
+('PR056', 'Refrigeration Cycle Lab', 'MP6020'),
+('PR057', 'Thermodynamic Cycle Simulation', 'MP6020'),
+('PR058', 'Stress Analysis', 'MP6030'),
+('PR059', 'Gear Design Simulation', 'MP6030'),
+('PR060', 'CAD-based Mechanism Modeling', 'MP6030');
 
 -- --------------------------------------------------------
 
@@ -331,9 +424,24 @@ CREATE TABLE `subjects` (
 --
 
 INSERT INTO `subjects` (`course_code`, `name`, `credit`, `Dept_ID`) VALUES
-('EC5020', 'Digital Design', 3, 'EEE'),
+('CE5010', 'Structural Analysis', 3, 'CEE'),
+('CE5020', 'Environmental Engineering', 3, 'CEE'),
+('CE5030', 'Transportation Engineering', 3, 'CEE'),
+('EC5011', 'Digital Signal Processing', 3, 'EEE'),
+('EC5020', 'Analog and Digital Communiation', 3, 'EEE'),
+('EC5030', 'Control Systems', 3, 'EEE'),
 ('EC5070', 'Database Management', 3, 'CE'),
-('EC5080', 'Software Construction', 3, 'CE');
+('EC5080', 'Software Construction', 3, 'CE'),
+('EC5110', 'Computer Architucture', 3, 'CE'),
+('IDS601', 'Engineering Ethics', 2, 'IDS'),
+('IDS602', 'Project Management', 2, 'IDS'),
+('IDS603', 'Technical Writing', 2, 'IDS'),
+('MC6010', 'Linear Algebra', 3, 'MC'),
+('MC6020', 'Probability and Statistics', 3, 'MC'),
+('MC6030', 'Numerical Methods', 3, 'MC'),
+('MP6010', 'Fluid Mechanics', 3, 'MP'),
+('MP6020', 'Thermodynamics', 3, 'MP'),
+('MP6030', 'Machine Design', 3, 'MP');
 
 -- --------------------------------------------------------
 
