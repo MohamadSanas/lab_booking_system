@@ -25,7 +25,7 @@ SELECT
     lb.schedule_time,
     lb.action
 FROM lab_booking lb
-JOIN Technical_officer_assign toa ON lb.lab_ID = toa.Lab_ID
+JOIN technical_officer_assign toa ON lb.lab_ID = toa.Lab_ID
 WHERE toa.TO_ID = ?
 ORDER BY lb.schedule_date DESC, lb.schedule_time DESC
 ";
